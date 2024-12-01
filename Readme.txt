@@ -1,4 +1,5 @@
 This solution uses clean Architecture, MediatR and fluentValidation. There is an issue of when I setup FluentValidation, and cause it doesn't work. 
+To run the solution, just run it, and then you should be able to see Swagger.
 
 Improvement:
   1. The url should be store in the config, not in the source code. 
