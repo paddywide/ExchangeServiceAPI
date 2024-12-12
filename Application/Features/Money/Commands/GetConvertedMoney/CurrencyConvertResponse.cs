@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Models.Request
+namespace Core.Models.Response
 {
-    //public record CurrencyConvertRequest(float Amount, string InputCurrency, string OutputCurrancy);
-    public class CurrencyConvertRequest
+    public class CurrencyConvertResponse()
     {
         public float Amount { get; set; }
         public string InputCurrency { get; set; }
         public string OutputCurrancy { get; set; }
+        public float value { get; set; }
     }
 }

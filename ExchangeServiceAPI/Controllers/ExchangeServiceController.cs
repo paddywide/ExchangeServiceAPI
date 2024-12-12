@@ -1,19 +1,24 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Core.Models.Request;
 
-using Application.Query;
+using Application.Features.Money.Commands.GetConvertedMoney;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExchangeServiceController(ISender sender) : ControllerBase
+    public class ExchangeServiceController : ControllerBase
     {
-        [HttpPost("")]
-        public async Task<IActionResult> GetExchangeRate(CurrencyConvertRequest convertRequest)
+        private readonly IMediator _mediator;
+        public ExchangeServiceController(IMediator mediator)
         {
-            var result = await sender.Send(new GetExchangeRateQuery(convertRequest));
+            _mediator = mediator;
+        }
+
+        [HttpPost("")]
+        public async Task<IActionResult> GetExchangeRate(GetExchangeRateCommand convertRequest)
+        {
+            var result = await _mediator.Send(convertRequest);
             //var convertedResult = await sender.Send(new Convert(result));
             return Ok(result);
         }

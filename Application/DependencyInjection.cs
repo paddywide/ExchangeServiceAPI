@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MediatR.NotificationPublishers;
-using Application.Validators;
 using FluentValidation;
+using Application.Features.Money.Commands.GetConvertedMoney;
 
 namespace Application
 {
@@ -13,7 +13,7 @@ namespace Application
             {
                 cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             });
-            services.AddValidatorsFromAssemblyContaining<CurrencyConvertRequestValidator>();
+           // services.AddValidatorsFromAssemblyContaining<GetExchangeRateCommandValidator>();
 
             return services;
         }

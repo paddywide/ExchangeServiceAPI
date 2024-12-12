@@ -1,13 +1,12 @@
-using Application.Validators;
-using Core.Models.Request;
+using Application.Features.Money.Commands.GetConvertedMoney;
 
 namespace Application.Test
 {
     public class CurrencyConvertRequestValidatorTest
     {
-        CurrencyConvertRequestValidator validator = new CurrencyConvertRequestValidator();
-        readonly CurrencyConvertRequest request_amtNeg = new CurrencyConvertRequest() { Amount = (float)-1, InputCurrency = "AUD", OutputCurrancy = "USD" };
-        readonly CurrencyConvertRequest request_InCurEmt = new CurrencyConvertRequest() { Amount = (float)1, InputCurrency = "", OutputCurrancy = "USD" };
+        GetExchangeRateCommandValidator validator = new GetExchangeRateCommandValidator();
+        readonly GetExchangeRateCommand request_amtNeg = new GetExchangeRateCommand() { Amount = (float)-1, InputCurrency = "AUD", OutputCurrancy = "USD" };
+        readonly GetExchangeRateCommand request_InCurEmt = new GetExchangeRateCommand() { Amount = (float)1, InputCurrency = "", OutputCurrancy = "USD" };
 
         [SetUp]
         public void Setup()

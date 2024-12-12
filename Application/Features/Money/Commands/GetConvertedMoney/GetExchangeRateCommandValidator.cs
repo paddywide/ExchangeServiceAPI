@@ -1,16 +1,15 @@
-﻿using Core.Models.Request;
-using FluentValidation;
+﻿using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Validators
+namespace Application.Features.Money.Commands.GetConvertedMoney
 {
-    public class CurrencyConvertRequestValidator : AbstractValidator<CurrencyConvertRequest>
+    public class GetExchangeRateCommandValidator : AbstractValidator<GetExchangeRateCommand>
     {
-        public CurrencyConvertRequestValidator()
+        public GetExchangeRateCommandValidator()
         {
             RuleFor(x => x.Amount)
                 .NotEmpty().WithMessage("Amount is required")
