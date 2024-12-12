@@ -4,6 +4,7 @@ using Core.Models;
 using MediatR;
 using System.Net.Http.Json;
 using System.Security.Cryptography.X509Certificates;
+using Application.Exception;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -23,7 +24,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             var validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Any())
-                throw new Exception( validationResult.Errors.ToArray().ToString());
+                throw new BadRequestException("Invalid ExchangeRate Request", validationResult);
 
             var response = await _externalVendorRepository.GetExchangeRate();
             if (response.IsSuccessStatusCode)
