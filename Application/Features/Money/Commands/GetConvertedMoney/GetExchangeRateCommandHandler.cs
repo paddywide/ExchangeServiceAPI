@@ -9,12 +9,12 @@ using Application.Contracts.CurrencyConvert;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
-    public class GetExchangeRateQueryHandler
+    public class GetExchangeRateCommandHandler
         : IRequestHandler<GetExchangeRateCommand, CurrencyConvertResponse>
     {
         private readonly IExternalVendorRepository _externalVendorRepository;
 
-        public GetExchangeRateQueryHandler(IExternalVendorRepository externalVendorRepository)
+        public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository)
         {
             _externalVendorRepository = externalVendorRepository;
         }
