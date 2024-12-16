@@ -61,7 +61,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
         {
             var resp = await response.Content.ReadFromJsonAsync<ExchangeRate>();
             if (resp is null)
-                throw new BadRequestException("GetExchangeRate Response is null");
+                throw new NullReferenceException("GetExchangeRate Response is null");
 
             return resp.Conversion_rates.USD;
         }

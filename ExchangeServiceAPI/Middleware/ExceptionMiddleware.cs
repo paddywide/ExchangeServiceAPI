@@ -46,14 +46,14 @@ namespace API.Middleware
                         Errors = badRequestException.ValidationErrors
                     };
                     break;
-                case HttpResponseNullException httpResponseNullException:
+                case NullReferenceException nullReferenceException:
                     statusCode = HttpStatusCode.BadRequest;
                     problem = new CustomProblemDetails
                     {
-                        Title = httpResponseNullException.message,
+                        Title = nullReferenceException.Message,
                         Status = (int)statusCode,
-                        Detail = httpResponseNullException.InnerException?.Message,
-                        Type = nameof(HttpResponseNullException),
+                        Detail = nullReferenceException.Message,
+                        Type = nameof(NullReferenceException),
                     };
                     break;
                 case NotFoundException NotFound:
