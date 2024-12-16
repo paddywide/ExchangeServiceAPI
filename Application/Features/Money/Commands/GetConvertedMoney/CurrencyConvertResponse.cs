@@ -11,6 +11,6 @@ namespace Core.Models.Response
         public float Amount { get; set; }
         public string InputCurrency { get; set; }
         public string OutputCurrancy { get; set; }
-        public float value { get; set; }
+        public double value { get; set; }
     }
 }

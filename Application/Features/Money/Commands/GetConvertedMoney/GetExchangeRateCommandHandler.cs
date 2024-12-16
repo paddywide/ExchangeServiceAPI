@@ -6,6 +6,8 @@ using System.Net.Http.Json;
 using System.Security.Cryptography.X509Certificates;
 using Application.Exception;
 using Application.Contracts.CurrencyConvert;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -34,30 +36,32 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             }
 
             var responseCurrency = await GetExchangeOneRateAsync(response, request.OutputCurrancy);
-            float convertedAmount = CaculateConvertedAmount(responseCurrency, request.Amount);
+            double convertedAmount = CaculateConvertedAmount(responseCurrency, request.Amount);
             var ret = GenerateResponse(request, convertedAmount);
             return ret;
         }
 
-        private CurrencyConvertResponse GenerateResponse(GetExchangeRateCommand request, float convertedAmount)
+        private CurrencyConvertResponse GenerateResponse(GetExchangeRateCommand request, double convertedAmount)
         {
             return new CurrencyConvertResponse()
             {
                 Amount = (float)request.Amount,
                 InputCurrency = request.InputCurrency,
                 OutputCurrancy = request.OutputCurrancy,
-                value = (float)convertedAmount
+                value = (double)convertedAmount
             };
         }
 
-        private float CaculateConvertedAmount(float responseCurrency, float amount)
+        private double CaculateConvertedAmount(double responseCurrency, double amount)
         {
             return responseCurrency * amount;
         }
 
-        private async Task<float> GetExchangeOneRateAsync(HttpResponseMessage response, string OutputCurrancy)
+        private async Task<double> GetExchangeOneRateAsync(HttpResponseMessage response, string OutputCurrancy)
         {
             var resp = await response.Content.ReadFromJsonAsync<ExchangeRate>();
+            if (resp is null)
+                throw new BadRequestException("GetExchangeRate Response is null");
 
             return resp.Conversion_rates.USD;
         }

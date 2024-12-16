@@ -8,6 +8,6 @@ namespace Core.Models
 {
     public class Conversion_Rates
     {
-        public float USD { get; set; }
+        public double USD { get; set; }
     }
 }

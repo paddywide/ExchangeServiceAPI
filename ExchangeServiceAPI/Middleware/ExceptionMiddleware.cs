@@ -46,6 +46,16 @@ namespace API.Middleware
                         Errors = badRequestException.ValidationErrors
                     };
                     break;
+                case HttpResponseNullException httpResponseNullException:
+                    statusCode = HttpStatusCode.BadRequest;
+                    problem = new CustomProblemDetails
+                    {
+                        Title = httpResponseNullException.message,
+                        Status = (int)statusCode,
+                        Detail = httpResponseNullException.InnerException?.Message,
+                        Type = nameof(HttpResponseNullException),
+                    };
+                    break;
                 case NotFoundException NotFound:
                     statusCode = HttpStatusCode.NotFound;
                     problem = new CustomProblemDetails
