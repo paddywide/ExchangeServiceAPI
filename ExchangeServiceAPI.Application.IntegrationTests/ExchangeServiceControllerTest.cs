@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Moq;
 using Newtonsoft.Json;
 using System.Net;
+using static ExchangeServiceAPI.Application.IntegrationTests.ExchangeServiceControllerTest;
 
 namespace ExchangeServiceAPI.Application.IntegrationTests
 {
@@ -33,16 +34,9 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
         }
 
         [Test]
-        public async Task Test1()
+        public async Task MediatRTest1()
         {
             var services = new ServiceCollection();
-            //var serviceProvider = services.AddMediatR(cfg =>
-            //{
-            //    cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
-            //}).BuildServiceProvider();
-
-
-
 
             var serviceProvider = services
                 .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetExchangeRateCommandHandler).Assembly))
@@ -54,19 +48,24 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
             var response = await mediator.Send(_command);
 
             Assert.IsNotNull(response);
-            //var fixture = new Fixture();
-            //// Arranged
-            //Setup();
-            //_ = _mediator.Setup(x => x.Send(request: _command))
-            //    .Returns(new Task<CurrencyConvertResponse>());
-
-            //// Act
-            //var returns = await _mediator.Send(timeRegisterCommandRequest);
-
-            //// Assert
-            //_mediator.Verify(x => x.Send(It.IsAny<GetExchangeRateCommand>()), Times.Once);
         }
 
+        [Test]
+        public async Task MediatRTest2()
+        {
+            // Arranged
+            MyController myController = new MyController(_mediator.Object);
+            _mediator.Setup(x => x.Send(It.IsAny<GetExchangeRateCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new CurrencyConvertResponse ());
+
+            // Act
+            await myController.Index();
+
+            // Assert
+            _mediator.Verify(x => x.Send(It.IsAny<GetExchangeRateCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+
+            //Assert.IsNotNull(response);
+        }
         public class MockExternalVendorRepository : IExternalVendorRepository
         {
             public Task<HttpResponseMessage> GetExchangeRate()
@@ -80,6 +79,25 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
                 };
 
                 return Task.FromResult<HttpResponseMessage> (ret);
+            }
+        }
+
+        public class MyController : Controller
+        {
+            private readonly IMediator _mediator;
+
+            public MyController(IMediator mediator)
+            {
+                _mediator = mediator;
+            }
+
+            public async Task<CurrencyConvertResponse> Index()
+            {
+                var query = new GetExchangeRateCommand();
+
+                var result = await _mediator.Send(query);
+
+                return await Task.FromResult(result).ConfigureAwait(false);
             }
         }
     }

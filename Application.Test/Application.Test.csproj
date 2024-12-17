@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mocks\**" />
+    <EmbeddedResource Remove="Mocks\**" />
+    <None Remove="Mocks\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
@@ -27,10 +33,6 @@
 
   <ItemGroup>
     <Using Include="NUnit.Framework" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mocks\" />
   </ItemGroup>
 
 </Project>

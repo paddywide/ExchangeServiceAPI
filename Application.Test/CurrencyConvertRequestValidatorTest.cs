@@ -1,6 +1,5 @@
 using Application.Exception;
 using Application.Features.Money.Commands.GetConvertedMoney;
-using Application.Test.Mocks;
 using Core.Interfaces;
 using Core.Models;
 using Core.Models.Response;
