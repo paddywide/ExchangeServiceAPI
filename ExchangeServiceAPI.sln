@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Test", "Applica
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F0661669-5229-4D76-8BD4-4EA39B0DED6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeServiceAPI.Application.IntegrationTests", "ExchangeServiceAPI.Application.IntegrationTests\ExchangeServiceAPI.Application.IntegrationTests.csproj", "{670FC0FC-7CD4-4EEE-AB7F-909595849C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeServiceAPI.Application.IntegrationTests", "ExchangeServiceAPI.Application.IntegrationTests\ExchangeServiceAPI.Application.IntegrationTests.csproj", "{670FC0FC-7CD4-4EEE-AB7F-909595849C3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A1725375-118E-48E3-901A-7C3983ED26F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,7 @@ Global
 		{5585DE47-7644-4BAF-860B-6C99DAD6ED20} = {F0661669-5229-4D76-8BD4-4EA39B0DED6E}
 		{967F64B8-55F5-499D-A48C-B7352CB51DA0} = {E734E7C2-DCCF-4EED-9275-9E844C576FCE}
 		{670FC0FC-7CD4-4EEE-AB7F-909595849C3A} = {E734E7C2-DCCF-4EED-9275-9E844C576FCE}
+		{A1725375-118E-48E3-901A-7C3983ED26F6} = {F0661669-5229-4D76-8BD4-4EA39B0DED6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A8D9F02-C042-415B-A3F4-51C69DB130C1}

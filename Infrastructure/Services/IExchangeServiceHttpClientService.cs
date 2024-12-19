@@ -8,6 +8,6 @@ namespace Infrastructure.Services
 {
     public interface IExchangeServiceHttpClientService
     {
-        Task<HttpResponseMessage> GetData();
+        Task<HttpResponseMessage> GetData(string inputCurrency);
     }
 }

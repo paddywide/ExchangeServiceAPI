@@ -68,7 +68,7 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
         }
         public class MockExternalVendorRepository : IExternalVendorRepository
         {
-            public Task<HttpResponseMessage> GetExchangeRate()
+            public Task<HttpResponseMessage> GetExchangeRate(string inputCurrency)
             {
                 ExchangeRate httpResponse = new ExchangeRate() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
                 string _requestJs = JsonConvert.SerializeObject(httpResponse);

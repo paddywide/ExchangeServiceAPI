@@ -29,7 +29,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             if (validationResult.Errors.Any())
                 throw new BadRequestException("Invalid ExchangeRate Request", validationResult);
 
-            var response = await _externalVendorRepository.GetExchangeRate();
+            var response = await _externalVendorRepository.GetExchangeRate(request.InputCurrency);
             if (!response.IsSuccessStatusCode)
             {
                 return new CurrencyConvertResponse();

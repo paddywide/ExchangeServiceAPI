@@ -31,16 +31,16 @@ namespace Application.Test
 
             SetupRequestAndResult(testCase);
 
+            _command = new GetExchangeRateCommand() { Amount = 1, InputCurrency = "AUD", OutputCurrancy = "USD" };
             var mockMessageHandler = new Mock<HttpMessageHandler>();
             _externalVendorRepository
-                .Setup<Task<HttpResponseMessage>>(r => r.GetExchangeRate())
+                .Setup<Task<HttpResponseMessage>>(r => r.GetExchangeRate(_command.InputCurrency))
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(_requestJs)
                 });
 
-            _command = new GetExchangeRateCommand() { Amount = 1, InputCurrency = "AUD", OutputCurrancy = "USD" };
         }
 
         private void SetupRequestAndResult(string testCase)

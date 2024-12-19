@@ -7,9 +7,9 @@ namespace Infrastructure.Repositories
         IExchangeServiceHttpClientService exchangeServiceHttpClientService)
         : IExternalVendorRepository
     {
-        public async Task<HttpResponseMessage> GetExchangeRate()
+        public async Task<HttpResponseMessage> GetExchangeRate(string inputCurrency)
         {
-            return await exchangeServiceHttpClientService.GetData();
+            return await exchangeServiceHttpClientService.GetData(inputCurrency);
         }
     }
 }
