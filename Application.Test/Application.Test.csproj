@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Core\Domain.csproj" />
+    <ProjectReference Include="..\Application\ExchangeRate.Application.csproj" />
+    <ProjectReference Include="..\Core\ExchangeRate.Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\ExchangeRate.Infrastructure.csproj" />
   </ItemGroup>
 

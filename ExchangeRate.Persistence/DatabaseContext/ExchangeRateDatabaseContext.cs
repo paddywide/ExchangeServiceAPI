@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace ExchangeRate.Persistence.DatabaseContext
 {
     public class ExchangeRateDatabaseContext : DbContext
     {
+        public DbSet<CurrencyCode> CurrencyCode { get; set;  }
         public ExchangeRateDatabaseContext(DbContextOptions<ExchangeRateDatabaseContext> options) : base(options)
         {
-            public DbSet<CurrencyCode> CurrencyCode { get; set;  }
         }
     }
 }

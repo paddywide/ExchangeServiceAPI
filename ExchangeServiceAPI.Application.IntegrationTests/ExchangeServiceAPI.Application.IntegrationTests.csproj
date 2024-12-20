@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Domain.csproj" />
+    <ProjectReference Include="..\Core\ExchangeRate.Domain.csproj" />
     <ProjectReference Include="..\ExchangeServiceAPI\API.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
