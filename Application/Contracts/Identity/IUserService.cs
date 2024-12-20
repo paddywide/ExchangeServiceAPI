@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExchangeRate.Domain.Models
+namespace ExchangeRate.Application.Contracts.Identity
 {
-    public class Conversion_Rates
+    public interface IUserService
     {
-        public double USD { get; set; }
+        public string UserId { get; }
     }
 }

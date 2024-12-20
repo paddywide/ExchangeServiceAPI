@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ExchangeRate.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace ExchangeRate.Domain.Models
 {
-    public class CurrencyCode
+    public class CurrencyCode : BaseEntity
     {
         public string Code { get; set; }
     }

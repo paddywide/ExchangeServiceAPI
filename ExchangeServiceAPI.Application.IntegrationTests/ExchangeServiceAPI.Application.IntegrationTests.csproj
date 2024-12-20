@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\API\ExchangeRate.API.csproj" />
     <ProjectReference Include="..\Core\ExchangeRate.Domain.csproj" />
-    <ProjectReference Include="..\ExchangeServiceAPI\API.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Infrastructure\ExchangeRate.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

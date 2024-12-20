@@ -8,6 +8,7 @@ using Application.Exception;
 using Application.Contracts.CurrencyConvert;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using ExchangeRate.Domain.Models;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -59,7 +60,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
 
         private async Task<double> GetExchangeOneRateAsync(HttpResponseMessage response, string OutputCurrancy)
         {
-            var resp = await response.Content.ReadFromJsonAsync<ExchangeRate>();
+            var resp = await response.Content.ReadFromJsonAsync<ExchangeRate.Domain.Models.ExchangeRate>();
             if (resp is null)
                 throw new NullReferenceException("GetExchangeRate Response is null");
 
