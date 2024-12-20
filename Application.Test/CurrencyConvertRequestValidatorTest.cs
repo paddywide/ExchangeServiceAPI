@@ -3,6 +3,7 @@ using Application.Features.Money.Commands.GetConvertedMoney;
 using Core.Interfaces;
 using Core.Models;
 using Core.Models.Response;
+using ExchangeRate.Domain.Models;
 using MediatR;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Moq;
@@ -45,30 +46,30 @@ namespace Application.Test
 
         private void SetupRequestAndResult(string testCase)
         {
-            ExchangeRate httpResponse;
+            ExchangeRateData httpResponse;
             switch (testCase)
             {
                 case "Success":
                     _request = new GetExchangeRateCommand() { Amount = (float)1, InputCurrency = "AUD", OutputCurrancy = "USD" };
                     _expectedResult = new CurrencyConvertResponse() { Amount = 1, InputCurrency = "AUD", OutputCurrancy = "USD", value = 0.6367 };
-                    httpResponse = new ExchangeRate() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
+                    httpResponse = new ExchangeRateData() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
                     _requestJs = JsonConvert.SerializeObject(httpResponse);
                     break;
                 case "Amount_Is_Negative":
                     _request = new GetExchangeRateCommand() { Amount = (float)-1, InputCurrency = "AUD", OutputCurrancy = "USD" };
-                    httpResponse = new ExchangeRate() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
+                    httpResponse = new ExchangeRateData() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
                     _requestJs = JsonConvert.SerializeObject(httpResponse);
                     break;
 
                 case "InputCurrency_Is_Empty":
                     _request = new GetExchangeRateCommand() { Amount = (float)1, InputCurrency = "", OutputCurrancy = "USD" };
-                    httpResponse = new ExchangeRate() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
+                    httpResponse = new ExchangeRateData() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
                     _requestJs = JsonConvert.SerializeObject(httpResponse);
                     break;
 
                 case "InputCurrency_IsNot_3Chars":
                     _request = new GetExchangeRateCommand() { Amount = (float)1, InputCurrency = "FFFED", OutputCurrancy = "USD" };
-                    httpResponse = new ExchangeRate() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
+                    httpResponse = new ExchangeRateData() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
                     _requestJs = JsonConvert.SerializeObject(httpResponse);
                     break;
 

@@ -60,7 +60,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
 
         private async Task<double> GetExchangeOneRateAsync(HttpResponseMessage response, string OutputCurrancy)
         {
-            var resp = await response.Content.ReadFromJsonAsync<ExchangeRate.Domain.Models.ExchangeRate>();
+            var resp = await response.Content.ReadFromJsonAsync<ExchangeRateData>();
             if (resp is null)
                 throw new NullReferenceException("GetExchangeRate Response is null");
 

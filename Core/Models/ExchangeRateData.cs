@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExchangeRate.Domain.Models
 {
-    public class ExchangeRate
+    public class ExchangeRateData
     {
         public string Result { get; set; }
         public string Base_code { get; set; }

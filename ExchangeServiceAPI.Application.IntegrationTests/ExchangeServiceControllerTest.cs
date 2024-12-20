@@ -3,6 +3,7 @@ using Application.Features.Money.Commands.GetConvertedMoney;
 using Core.Interfaces;
 using Core.Models;
 using Core.Models.Response;
+using ExchangeRate.Domain.Models;
 using Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
@@ -70,7 +71,7 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
         {
             public Task<HttpResponseMessage> GetExchangeRate(string inputCurrency)
             {
-                ExchangeRate httpResponse = new ExchangeRate() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
+                ExchangeRateData httpResponse = new ExchangeRateData() { Base_code = "AUD", Result = "success", Time_last_update_utc = "Mon, 16 Dec 2024 00:00:02 +0000", Conversion_rates = new Conversion_Rates() { USD = 0.6367 } };
                 string _requestJs = JsonConvert.SerializeObject(httpResponse);
                 HttpResponseMessage ret = new HttpResponseMessage()
                 {
