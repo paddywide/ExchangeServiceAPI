@@ -11,11 +11,11 @@ using ExchangeRate.Domain.Models;
 
 namespace ExchangeRate.Persistence.DatabaseContext
 {
-    public class ExchangeRateDatabaseContext : DbContext
+    public class ExchangeDatabaseContext : DbContext
     {
         //private readonly IUserService _userService;
 
-        //public ExchangeRateDatabaseContext(DbContextOptions<ExchangeRateDatabaseContext> options, IUserService userService) : base(options)
+        //public ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options, IUserService userService) : base(options)
         //{
         //    this._userService = userService;
 
@@ -23,7 +23,7 @@ namespace ExchangeRate.Persistence.DatabaseContext
         //public DbSet<CurrencyCode> CurrencyCode { get; set; }
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
-        //    modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeRateDatabaseContext).Assembly);
+        //    modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeDatabaseContext).Assembly);
         //    base.OnModelCreating(modelBuilder);
         //}
         //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -43,13 +43,13 @@ namespace ExchangeRate.Persistence.DatabaseContext
         //    return base.SaveChangesAsync(cancellationToken);
         //}
 
-        public ExchangeRateDatabaseContext(DbContextOptions<ExchangeRateDatabaseContext> options) : base(options)
+        public ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options) : base(options)
         {
         }
         public DbSet<CurrencyCode> CurrencyCode { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeRateDatabaseContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeDatabaseContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
        
