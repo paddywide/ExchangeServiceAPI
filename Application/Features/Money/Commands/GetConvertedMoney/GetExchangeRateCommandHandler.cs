@@ -9,6 +9,8 @@ using Application.Contracts.CurrencyConvert;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using ExchangeRate.Domain.Models;
+using ExchangeRate.Application.Contracts.Persistence;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -16,10 +18,12 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
         : IRequestHandler<GetExchangeRateCommand, CurrencyConvertResponse>
     {
         private readonly IExternalVendorRepository _externalVendorRepository;
+        private readonly IQueryHistoryRepository _iQueryHistoryRepository;
 
-        public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository)
+        public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository, IQueryHistoryRepository queryHistoryRepository)
         {
             _externalVendorRepository = externalVendorRepository;
+            _iQueryHistoryRepository = queryHistoryRepository;
         }
 
         public async Task<CurrencyConvertResponse> Handle(GetExchangeRateCommand request, CancellationToken cancellationToken)
@@ -40,6 +44,18 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             double convertedAmount = CaculateConvertedAmount(responseCurrency, request.Amount);
             var ret = GenerateResponse(request, convertedAmount);
 
+            // convert to domain entity object
+            //var leaveTypeToCreate = _mapper.Map<Domain.LeaveType>(request);
+
+            // add to database
+            await _iQueryHistoryRepository.AddHistory(
+                new QueryHistory() 
+                { 
+                    DateQueried = DateTime.Now, 
+                    InputCurrency = "AUD",
+                    OutputCurrancy = "USD",
+                    Rate = 0.6235
+                });
 
             return ret;
         }

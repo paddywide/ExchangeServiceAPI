@@ -43,10 +43,12 @@ namespace ExchangeRate.Persistence.DatabaseContext
         //    return base.SaveChangesAsync(cancellationToken);
         //}
 
-        public ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options) : base(options)
+        public DbSet<CurrencyCode> CurrencyCode { get; set; }
+        public DbSet<QueryHistory> QueryHistory { get; set; }
+
+       public ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options) : base(options)
         {
         }
-        public DbSet<CurrencyCode> CurrencyCode { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeDatabaseContext).Assembly);

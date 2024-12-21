@@ -21,6 +21,7 @@ namespace ExchangeRate.Persistence
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ICurrencyCodeRepository, CurrencyCodeRepository>();
+            services.AddScoped<IQueryHistoryRepository, QueryHistoryRepository>();
 
             return services;
         }
