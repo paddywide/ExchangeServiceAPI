@@ -39,6 +39,8 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             var responseCurrency = await GetExchangeOneRateAsync(response, request.OutputCurrancy);
             double convertedAmount = CaculateConvertedAmount(responseCurrency, request.Amount);
             var ret = GenerateResponse(request, convertedAmount);
+
+
             return ret;
         }
 

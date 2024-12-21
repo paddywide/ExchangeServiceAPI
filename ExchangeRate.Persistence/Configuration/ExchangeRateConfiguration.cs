@@ -24,7 +24,7 @@ namespace ExchangeRate.Persistence.Configurations
                 },
                  new CurrencyCode
                  {
-                     Id = 1,
+                     Id = 2,
                      Code = "USD",
                      DateCreated = DateTime.Now,
                      DateModified = DateTime.Now

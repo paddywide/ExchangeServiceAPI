@@ -18,6 +18,8 @@ using static ExchangeServiceAPI.Application.IntegrationTests.ExchangeServiceCont
 
 namespace ExchangeServiceAPI.Application.IntegrationTests
 {
+    //MediatR: How to Quickly Test Your Handlers with Unit Tests
+    //https://goatreview.com/mediatr-quickly-test-handlers-with-unit-tests/#:~:text=To%20build%20an%20effective%20unit,and%20not%20for%20a%20class.
     public class ExchangeServiceControllerTest
     {
         private Mock<IMediator> _mediator;
