@@ -3,6 +3,7 @@ using Application.Features.Money.Commands.GetConvertedMoney;
 using Core.Interfaces;
 using Core.Models;
 using Core.Models.Response;
+using ExchangeRate.Application.Contracts.Persistence;
 using ExchangeRate.Domain.Models;
 using MediatR;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
@@ -20,6 +21,7 @@ namespace Application.Test
         GetExchangeRateCommand _request;
 
         private Mock<IExternalVendorRepository> _externalVendorRepository;
+        private Mock<IQueryHistoryRepository> _queryHistoryRepository;
         private GetExchangeRateCommand _command;
         CurrencyConvertResponse _expectedResult;
         string _requestJs;
@@ -29,6 +31,7 @@ namespace Application.Test
             _validator = new GetExchangeRateCommandValidator();
             var mediator = new Mock<IMediator>();
             _externalVendorRepository = new Mock<IExternalVendorRepository>();
+            _queryHistoryRepository = new Mock<IQueryHistoryRepository>();
 
             SetupRequestAndResult(testCase);
 
@@ -83,7 +86,7 @@ namespace Application.Test
         {
             Setup("Success");
             //Act
-            var handler = new GetExchangeRateCommandHandler(_externalVendorRepository.Object);
+            var handler = new GetExchangeRateCommandHandler(_externalVendorRepository.Object, _queryHistoryRepository.Object);
             var result = await handler.Handle(_command, CancellationToken.None);
 
             //Assert

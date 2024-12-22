@@ -14,7 +14,8 @@ namespace ExchangeRate.Persistence
             IConfiguration configuration)
         {
             services.AddDbContext<ExchangeDatabaseContext>(options => {
-                options.UseSqlServer(configuration.GetConnectionString("ExchangeRateDatabaseConnectionString"));
+                //options.UseSqlServer(configuration.GetConnectionString("ExchangeRateDatabaseConnectionString"));
+                options.UseSqlite(configuration.GetConnectionString("ExchangeRateDatabaseConnectionString"));
                 //below line to supress the warning when we Update-Database in nuget
                 options.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
             });
