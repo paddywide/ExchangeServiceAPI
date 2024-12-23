@@ -17,18 +17,21 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
     public class GetExchangeRateCommandHandler
         : IRequestHandler<GetExchangeRateCommand, CurrencyConvertResponse>
     {
-        private readonly IExternalVendorRepository _externalVendorRepository;
-        private readonly IQueryHistoryRepository _iQueryHistoryRepository;
+        private readonly IExternalVendorRepository _externalVendorRepository; 
+        private readonly IQueryHistoryRepository _queryHistoryRepository;
+        private readonly ICurrencyCodeRepository _currencyCodeRepository;
 
-        public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository, IQueryHistoryRepository queryHistoryRepository)
+        public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository, IQueryHistoryRepository queryHistoryRepository
+                                            , ICurrencyCodeRepository currencyCodeRepository)
         {
             _externalVendorRepository = externalVendorRepository;
-            _iQueryHistoryRepository = queryHistoryRepository;
+            _queryHistoryRepository = queryHistoryRepository;
+            _currencyCodeRepository = currencyCodeRepository;
         }
 
         public async Task<CurrencyConvertResponse> Handle(GetExchangeRateCommand request, CancellationToken cancellationToken)
         {
-            var validator = new GetExchangeRateCommandValidator();
+            var validator = new GetExchangeRateCommandValidator(_currencyCodeRepository, _queryHistoryRepository);
             var validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Any())
@@ -48,7 +51,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             //var leaveTypeToCreate = _mapper.Map<Domain.LeaveType>(request);
 
             // add to database
-            await _iQueryHistoryRepository.AddHistory(
+            await _queryHistoryRepository.AddHistory(
                 new QueryHistory() 
                 { 
                     DateQueried = DateTime.Now, 

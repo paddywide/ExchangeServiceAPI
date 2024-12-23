@@ -10,7 +10,8 @@ using ExchangeRate.Domain.Models;
 
 namespace ExchangeRate.Persistence.DatabaseContext
 {
-    public class ExchangeDatabaseContext : DbContext
+    //public class ExchangeDatabaseContext : DbContext
+    public class ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options) : DbContext(options)
     {
         //private readonly IUserService _userService;
 
@@ -42,17 +43,17 @@ namespace ExchangeRate.Persistence.DatabaseContext
         //    return base.SaveChangesAsync(cancellationToken);
         //}
 
-        public DbSet<CurrencyCode> CurrencyCode { get; set; }
-        public DbSet<QueryHistory> QueryHistory { get; set; }
+        public required DbSet<CurrencyCode> CurrencyCode { get; set; }
+        public required DbSet<QueryHistory> QueryHistory { get; set; }
 
-       public ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options) : base(options)
-        {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeDatabaseContext).Assembly);
-            base.OnModelCreating(modelBuilder);
-        }
+        //public ExchangeDatabaseContext(DbContextOptions<ExchangeDatabaseContext> options) : base(options)
+        //{
+        //}
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExchangeDatabaseContext).Assembly);
+        //    base.OnModelCreating(modelBuilder);
+        //}
        
 
     }

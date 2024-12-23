@@ -2,6 +2,7 @@
 using ExchangeRate.Domain.Models;
 using ExchangeRate.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,11 @@ namespace ExchangeRate.Persistence.Repositories
         public CurrencyCodeRepository(ExchangeDatabaseContext context) : base(context)
         {
         }
-
+        
+        public async Task<bool> IsCurrencyCodeExisted(string code)
+        {
+            return await _context.CurrencyCode.AnyAsync(q => q.Code == code);
+        }
         public async Task<bool> IsLeaveTypeUnique(string code)
         {
             return await _context.CurrencyCode.AnyAsync(q => q.Code == code) == false;

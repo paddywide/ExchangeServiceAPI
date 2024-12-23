@@ -25,6 +25,5 @@ namespace ExchangeRate.Persistence.Repositories
             await _context.AddAsync(queryHistory);
             await _context.SaveChangesAsync();
         }
-
     }
 }

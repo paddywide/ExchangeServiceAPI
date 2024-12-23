@@ -10,7 +10,8 @@ namespace ExchangeRate.Application.Contracts.Persistence
 
     public interface ICurrencyCodeRepository : IGenericRepository<CurrencyCode>
     {
-        Task<bool> IsLeaveTypeUnique(string name);
+        Task<bool> IsLeaveTypeUnique(string name); 
+        Task<bool> IsCurrencyCodeExisted(string name); 
         Task AddAllCurrencyCode(List<CurrencyCode> currencyCode);
     }
 }
