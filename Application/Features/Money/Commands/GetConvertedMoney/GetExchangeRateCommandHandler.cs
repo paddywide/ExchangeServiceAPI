@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using ExchangeRate.Domain.Models;
 using ExchangeRate.Application.Contracts.Persistence;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using AutoMapper;
+using ExchangeRate.Application.Features.Money.Commands.GetConvertedMoney;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -20,63 +22,74 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
         private readonly IExternalVendorRepository _externalVendorRepository; 
         private readonly IQueryHistoryRepository _queryHistoryRepository;
         private readonly ICurrencyCodeRepository _currencyCodeRepository;
+        private readonly IMapper _mapper;
 
         public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository, IQueryHistoryRepository queryHistoryRepository
-                                            , ICurrencyCodeRepository currencyCodeRepository)
+                                            , ICurrencyCodeRepository currencyCodeRepository, IMapper mapper)
         {
             _externalVendorRepository = externalVendorRepository;
             _queryHistoryRepository = queryHistoryRepository;
             _currencyCodeRepository = currencyCodeRepository;
+            _mapper = mapper;
         }
 
         public async Task<CurrencyConvertResponse> Handle(GetExchangeRateCommand request, CancellationToken cancellationToken)
+        {
+            ValidateRequest(request);
+            var response = await GetPublicExchangeRate(request.InputCurrency);
+            var calculateRate = await CalculateRate(response, request);
+            InsertIntoQueryHistory(calculateRate);
+            var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);
+
+            return ret;
+        }
+
+        private async void InsertIntoQueryHistory(CalculatedAmount calculateRate)
+        {
+            var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
+            queryHistoryToCreate.DateQueried = DateTime.UtcNow;
+            await _queryHistoryRepository.AddHistory(queryHistoryToCreate);
+        }
+
+        private async Task<CalculatedAmount> CalculateRate(HttpResponseMessage response, GetExchangeRateCommand request)
+        {
+            var rate = await GetExchangeOneRateAsync(response, request.OutputCurrancy);
+            double convertedAmount = CaculateConvertedAmount(rate, request.Amount);
+            var ret = GenerateResponse(request, convertedAmount, rate);
+            return ret;
+        }
+
+        private async Task<HttpResponseMessage> GetPublicExchangeRate(string inputCurrency)
+        {
+            var response = await _externalVendorRepository.GetExchangeRate(inputCurrency);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpResponseNullException("Cannot get public exchange rate");
+            }
+            return response;
+        }
+
+        private async void ValidateRequest(GetExchangeRateCommand request)
         {
             var validator = new GetExchangeRateCommandValidator(_currencyCodeRepository, _queryHistoryRepository);
             var validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Any())
                 throw new BadRequestException("Invalid ExchangeRate Request", validationResult);
+        }
 
-            var response = await _externalVendorRepository.GetExchangeRate(request.InputCurrency);
-            if (!response.IsSuccessStatusCode)
-            {
-                return new CurrencyConvertResponse();
-            }
-
-            var responseCurrency = await GetExchangeOneRateAsync(response, request.OutputCurrancy);
-            double convertedAmount = CaculateConvertedAmount(responseCurrency, request.Amount);
-            var ret = GenerateResponse(request, convertedAmount);
-
-            // convert to domain entity object
-            //var leaveTypeToCreate = _mapper.Map<Domain.LeaveType>(request);
-
-            // add to database
-            await _queryHistoryRepository.AddHistory(
-                new QueryHistory() 
-                { 
-                    DateQueried = DateTime.Now, 
-                    InputCurrency = "AUD",
-                    OutputCurrancy = "USD",
-                    Rate = 0.6235
-                });
+        private CalculatedAmount GenerateResponse(GetExchangeRateCommand request, double convertedAmount, double rate)
+        {
+            var ret = _mapper.Map<CalculatedAmount>(request);
+            ret.value = convertedAmount;
+            ret.Rate = rate;
 
             return ret;
         }
 
-        private CurrencyConvertResponse GenerateResponse(GetExchangeRateCommand request, double convertedAmount)
+        private double CaculateConvertedAmount(double rate, double amount)
         {
-            return new CurrencyConvertResponse()
-            {
-                Amount = (float)request.Amount,
-                InputCurrency = request.InputCurrency,
-                OutputCurrancy = request.OutputCurrancy,
-                value = (double)convertedAmount
-            };
-        }
-
-        private double CaculateConvertedAmount(double responseCurrency, double amount)
-        {
-            return responseCurrency * amount;
+            return rate * amount;
         }
 
         private async Task<double> GetExchangeOneRateAsync(HttpResponseMessage response, string OutputCurrancy)

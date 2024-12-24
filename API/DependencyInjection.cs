@@ -1,6 +1,6 @@
-﻿using Application;
+﻿using ExchangeRate.Application;
 using ExchangeRate.Persistence;
-using Infrastructure;
+using ExchangeRate.Infrastructure;
 
 namespace Api
 {

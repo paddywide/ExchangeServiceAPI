@@ -4,8 +4,9 @@ using FluentValidation;
 using Application.Features.Money.Commands.GetConvertedMoney;
 using System.Reflection;
 using Application.Contracts.CurrencyConvert;
+using ExchangeRate.Application.MappingProfiles;
 
-namespace Application
+namespace ExchangeRate.Application
 {
     public static class DependencyInjection
     {
@@ -17,8 +18,6 @@ namespace Application
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddTransient<ICurrencyConvert, CurrencyConvert>();
-
-            // services.AddValidatorsFromAssemblyContaining<GetExchangeRateCommandValidator>();
 
             return services;
         }
