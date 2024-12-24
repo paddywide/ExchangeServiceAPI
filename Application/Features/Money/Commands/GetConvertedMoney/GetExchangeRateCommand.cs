@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
-    public class GetExchangeRateCommand : IRequest<CurrencyConvertResponse>
+    public record GetExchangeRateCommand : IRequest<CurrencyConvertResponse>
     {
         public float Amount { get; set; }
         public string InputCurrency { get; set; }
