@@ -1,18 +1,13 @@
 ﻿using Core.Models.Response;
+using ExchangeRate.Domain.Primitive.Result;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
-    public record GetExchangeRateCommand : IRequest<CurrencyConvertResponse>
+    public record GetExchangeRateCommand : IRequest<ResultT<CurrencyConvertResponse>>
     {
         public float Amount { get; set; }
         public string InputCurrency { get; set; }
         public string OutputCurrancy { get; set; }
     }
-
 }

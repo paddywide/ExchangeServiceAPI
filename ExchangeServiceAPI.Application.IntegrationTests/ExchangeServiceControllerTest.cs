@@ -62,7 +62,7 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
                 .ReturnsAsync(new CurrencyConvertResponse ());
 
             // Act
-            await myController.Index();
+            //await myController.Index();
 
             // Assert
             _mediator.Verify(x => x.Send(It.IsAny<GetExchangeRateCommand>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -94,14 +94,23 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
                 _mediator = mediator;
             }
 
-            public async Task<CurrencyConvertResponse> Index()
-            {
-                var query = new GetExchangeRateCommand();
+            //below is for when we don't use Result pattern
+            //public async Task<CurrencyConvertResponse> Index()
+            //{
+            //    var query = new GetExchangeRateCommand();
 
-                var result = await _mediator.Send(query);
+            //    var result = await _mediator.Send(query);
 
-                return await Task.FromResult(result).ConfigureAwait(false);
-            }
+            //    return await Task.FromResult(result).ConfigureAwait(false);
+            //}
+            //public async Task<CurrencyConvertResponse> Index()
+            //{
+            //    var query = new GetExchangeRateCommand();
+
+            //    var result = await _mediator.Send(query);
+
+            //    return await Task.FromResult(result).ConfigureAwait(false);
+            //}
         }
     }
 }

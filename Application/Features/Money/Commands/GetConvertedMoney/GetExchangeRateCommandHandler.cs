@@ -1,23 +1,19 @@
 ﻿using Core.Interfaces;
 using Core.Models.Response;
-using Core.Models;
 using MediatR;
 using System.Net.Http.Json;
-using System.Security.Cryptography.X509Certificates;
-using Application.Exception;
-using Application.Contracts.CurrencyConvert;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 using ExchangeRate.Domain.Models;
 using ExchangeRate.Application.Contracts.Persistence;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using AutoMapper;
 using ExchangeRate.Application.Features.Money.Commands.GetConvertedMoney;
+using ExchangeRate.Domain.Primitive.Result;
+using FluentValidation.Results;
+using ExchangeRate.Domain.Errors;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
     public class GetExchangeRateCommandHandler
-        : IRequestHandler<GetExchangeRateCommand, CurrencyConvertResponse>
+        : IRequestHandler<GetExchangeRateCommand, ResultT<CurrencyConvertResponse>>
     {
         private readonly IExternalVendorRepository _externalVendorRepository; 
         private readonly IQueryHistoryRepository _queryHistoryRepository;
@@ -33,10 +29,20 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             _mapper = mapper;
         }
 
-        public async Task<CurrencyConvertResponse> Handle(GetExchangeRateCommand request, CancellationToken cancellationToken)
+        public async Task<ResultT<CurrencyConvertResponse>> Handle(GetExchangeRateCommand request, CancellationToken cancellationToken)
         {
-            ValidateRequest(request);
-            var response = await GetPublicExchangeRate(request.InputCurrency);
+            var validationResult = await ValidateRequest(request);
+            if (validationResult.Errors.Any())
+            {
+                return ConfigurationErrors.RequestValidationError(validationResult.Errors);
+            }
+
+            var response = await _externalVendorRepository.GetExchangeRate(request.InputCurrency);
+            if (!response.IsSuccessStatusCode)
+            {
+                return ConfigurationErrors.UnableGetPublicApiResponse;
+            }
+
             var calculateRate = await CalculateRate(response, request);
             InsertIntoQueryHistory(calculateRate);
             var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);
@@ -59,23 +65,11 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             return ret;
         }
 
-        private async Task<HttpResponseMessage> GetPublicExchangeRate(string inputCurrency)
-        {
-            var response = await _externalVendorRepository.GetExchangeRate(inputCurrency);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new HttpResponseNullException("Cannot get public exchange rate");
-            }
-            return response;
-        }
-
-        private async void ValidateRequest(GetExchangeRateCommand request)
+        private async Task<ValidationResult> ValidateRequest(GetExchangeRateCommand request)
         {
             var validator = new GetExchangeRateCommandValidator(_currencyCodeRepository, _queryHistoryRepository);
-            var validationResult = await validator.ValidateAsync(request);
-
-            if (validationResult.Errors.Any())
-                throw new BadRequestException("Invalid ExchangeRate Request", validationResult);
+            var result = await validator.ValidateAsync(request);
+            return result;
         }
 
         private CalculatedAmount GenerateResponse(GetExchangeRateCommand request, double convertedAmount, double rate)
