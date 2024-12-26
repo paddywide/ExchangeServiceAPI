@@ -21,7 +21,7 @@ namespace Api.Controllers
         //{
         //    var result = await _mediator.Send(convertRequest);
         //    return Ok(result);
-        //}
+        //}  
 
         [HttpPost("")]
         public async Task<IActionResult> GetExchangeRate(GetExchangeRateCommand convertRequest)
