@@ -1,5 +1,5 @@
-﻿using ExchangeRate.Application.Contracts.Persistence;
-using ExchangeRate.Domain.Models;
+﻿using ExchangeRate.Domain.Models;
+using ExchangeRate.Donmain.Contract;
 using ExchangeRate.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

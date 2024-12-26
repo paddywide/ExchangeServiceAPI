@@ -1,7 +1,7 @@
 ﻿using Application.Features.Money.Commands.GetConvertedMoney;
 using AutoMapper;
 using Core.Models.Response;
-using ExchangeRate.Application.Features.Money.Commands.GetConvertedMoney;
+using ExchangeRate.Domain.GetConvertedMondy;
 using ExchangeRate.Domain.Models;
 
 namespace ExchangeRate.Application.MappingProfiles

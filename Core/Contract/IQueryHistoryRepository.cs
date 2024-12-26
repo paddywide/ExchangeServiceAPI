@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExchangeRate.Application.Contracts.Persistence
+namespace ExchangeRate.Donmain.Contract
 {
 
     public interface IQueryHistoryRepository

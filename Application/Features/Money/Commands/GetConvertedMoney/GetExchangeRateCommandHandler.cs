@@ -3,12 +3,13 @@ using Core.Models.Response;
 using MediatR;
 using System.Net.Http.Json;
 using ExchangeRate.Domain.Models;
-using ExchangeRate.Application.Contracts.Persistence;
+using ExchangeRate.Donmain.Contract;
 using AutoMapper;
-using ExchangeRate.Application.Features.Money.Commands.GetConvertedMoney;
 using ExchangeRate.Domain.Primitive.Result;
 using FluentValidation.Results;
 using ExchangeRate.Domain.Errors;
+using ExchangeRate.Domain.GetConvertedMondy;
+using ExchangeRate.Domain.RequestedPublicRate;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -44,18 +45,20 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             }
 
             var calculateRate = await CalculateRate(response, request);
-            InsertIntoQueryHistory(calculateRate);
+            var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
+            RequestedPublicRate requestedPublicRate = new RequestedPublicRate(_queryHistoryRepository);
+            requestedPublicRate.SaveToQueryHistory(queryHistoryToCreate);
             var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);
 
             return ret;
         }
 
-        private async void InsertIntoQueryHistory(CalculatedAmount calculateRate)
-        {
-            var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
-            queryHistoryToCreate.DateQueried = DateTime.UtcNow;
-            await _queryHistoryRepository.AddHistory(queryHistoryToCreate);
-        }
+        //private async void InsertIntoQueryHistory(CalculatedAmount calculateRate)
+        //{
+        //    var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
+        //    queryHistoryToCreate.DateQueried = DateTime.UtcNow;
+        //    await _queryHistoryRepository.AddHistory(queryHistoryToCreate);
+        //}
 
         private async Task<CalculatedAmount> CalculateRate(HttpResponseMessage response, GetExchangeRateCommand request)
         {

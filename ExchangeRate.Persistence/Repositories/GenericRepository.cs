@@ -1,5 +1,5 @@
-﻿using ExchangeRate.Application.Contracts.Persistence;
-using ExchangeRate.Domain.Common;
+﻿using ExchangeRate.Domain.Common;
+using ExchangeRate.Donmain.Contract;
 using ExchangeRate.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using System;
