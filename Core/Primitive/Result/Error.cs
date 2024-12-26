@@ -1,8 +1,5 @@
-﻿
+﻿namespace ExchangeRate.Domain.Primitive.Result;
 
-namespace ExchangeRate.Domain.Primitive.Result;
-
-//from ResultPattern
 public class Error
 {
     private Error(
