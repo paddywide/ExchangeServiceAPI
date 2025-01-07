@@ -1,11 +1,26 @@
-This solution uses clean Architecture, MediatR and fluentValidation. There is an issue of when I setup FluentValidation, and cause it doesn't work. 
-To run the solution, just run it, and then you should be able to see Swagger.
+This solution uses below design and tech.
 
-Improvement:
-  1. The url should be store in the config, not in the source code. 
-  2. The calculation should be seperate into Application/Business/Convert.cs, due to there is an issue, I can't complete that.
-  3. Currency country code can be store in DB. In validator we can only allow the country code match our DB record.
-  4. Cater for more Exception: when errors happen on accessing public API.
-  5. Test case should cater for the following as well: 1. request amount is 0. 2. Input and Ouput Currency is not 3 chars and not in (AUD, USD).
-  6. Add logging.
-  
+Architecture and pattern: 
+clean Architecture, Result Pattern, Primitive and Value Object
+
+.Net Core:
+Code first, HttpClient
+
+Security:
+JWT authentication
+
+Nuget:
+Exception middleware, MediatR, fluentValidation, Mapper
+
+DB:
+SQLite
+
+
+There is one post method in swagger, if you post the below body 
+{
+  "amount": 5,
+  "inputCurrency": "AUD",
+  "outputCurrancy": "USD"
+}
+it will call http to get the real time exchange rage from public API, base on the rate it will return the converted USD amount. Also it will insert into the DB for logging this request.
+
