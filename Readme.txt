@@ -1,7 +1,7 @@
 This solution uses below design and tech.
 
 Architecture and pattern: 
-clean Architecture, Result Pattern, Primitive and Value Object
+clean Architecture, Result Pattern, Domain event, Aggregate, Primitive and Value Object
 
 .Net Core:
 Code first, HttpClient
