@@ -6,9 +6,6 @@ clean Architecture, Result Pattern, Domain event, Aggregate, Primitive and Value
 .Net Core:
 Code first, HttpClient
 
-Security:
-JWT authentication
-
 Nuget:
 Exception middleware, MediatR, fluentValidation, Mapper
 
@@ -22,5 +19,5 @@ There is one post method in swagger, if you post the below body
   "inputCurrency": "AUD",
   "outputCurrancy": "USD"
 }
-it will call http to get the real time exchange rage from public API, base on the rate it will return the converted USD amount. Also it will insert into the DB for logging this request.
 
+it will call http to get the real time exchange rage from public API, base on the rate it will return the converted USD amount. Also it will insert into the DB for logging this request.
