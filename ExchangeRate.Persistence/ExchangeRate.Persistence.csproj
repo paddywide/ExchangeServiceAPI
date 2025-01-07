@@ -25,4 +25,8 @@
     <ProjectReference Include="..\DB\SQLite\SQLite.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

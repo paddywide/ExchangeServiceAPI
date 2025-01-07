@@ -9,7 +9,6 @@ using ExchangeRate.Domain.Primitive.Result;
 using FluentValidation.Results;
 using ExchangeRate.Domain.Errors;
 using ExchangeRate.Domain.GetConvertedMondy;
-using ExchangeRate.Domain.Aggregate.RequestedPublicRate;
 using ExchangeRate.Application.Interfaces;
 using ExchangeRate.Application.Services;
 
@@ -49,9 +48,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             }
 
             var calculateRate = await CalculateRate(response, request);
-            var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
-            //RequestedPublicRate requestedPublicRate = new RequestedPublicRate(_queryHistoryRepository);
-            //requestedPublicRate.SaveToQueryHistory(queryHistoryToCreate);
+            //var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
             await _historyService.CreateHistory();
             InsertIntoQueryHistory(calculateRate);
             var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);

@@ -1,11 +1,11 @@
 ﻿using ExchangeRate.Persistence.DatabaseContext;
-using ExchangeRate.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using ExchangeRate.Donmain.Contract;
 using ExchangeRate.Application.Interfaces;
+using ExchangeRate.Persistence.Repositories;
 
 namespace ExchangeRate.Persistence
 {
