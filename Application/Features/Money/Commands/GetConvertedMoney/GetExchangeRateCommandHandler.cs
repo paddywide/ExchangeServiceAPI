@@ -46,19 +46,20 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
 
             var calculateRate = await CalculateRate(response, request);
             var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
-            RequestedPublicRate requestedPublicRate = new RequestedPublicRate(_queryHistoryRepository);
-            requestedPublicRate.SaveToQueryHistory(queryHistoryToCreate);
+            //RequestedPublicRate requestedPublicRate = new RequestedPublicRate(_queryHistoryRepository);
+            //requestedPublicRate.SaveToQueryHistory(queryHistoryToCreate);
+            InsertIntoQueryHistory(calculateRate);
             var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);
 
             return ret;
         }
 
-        //private async void InsertIntoQueryHistory(CalculatedAmount calculateRate)
-        //{
-        //    var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
-        //    queryHistoryToCreate.DateQueried = DateTime.UtcNow;
-        //    await _queryHistoryRepository.AddHistory(queryHistoryToCreate);
-        //}
+        private async void InsertIntoQueryHistory(CalculatedAmount calculateRate)
+        {
+            var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
+            queryHistoryToCreate.DateQueried = DateTime.UtcNow;
+            await _queryHistoryRepository.AddHistory(queryHistoryToCreate);
+        }
 
         private async Task<CalculatedAmount> CalculateRate(HttpResponseMessage response, GetExchangeRateCommand request)
         {
