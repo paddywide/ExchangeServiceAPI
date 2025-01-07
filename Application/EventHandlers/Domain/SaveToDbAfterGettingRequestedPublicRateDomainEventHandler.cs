@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExchangeRate.Application.Features.Money.Commands.RequestedPublicRate
+namespace ExchangeRate.Application.EventHandlers.Domain
 {
 
     internal sealed class SaveToDbAfterGettingRequestedPublicRateDomainEventHandler

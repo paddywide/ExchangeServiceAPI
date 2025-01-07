@@ -1,4 +1,8 @@
 ﻿using Core.Interfaces;
+using ExchangeRate.Application.EventHandlers.Domain;
+using ExchangeRate.Application.Interfaces;
+using ExchangeRate.Domain.Event;
+using ExchangeRate.Infrastructure.EventDispatching;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +22,8 @@ namespace ExchangeRate.Infrastructure
             //{
             //    httpClient.BaseAddress = new Uri(configuration.GetConnectionString("ExchangeRateUri"));
             //});
+            services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+            services.AddScoped<IEventHandler<HistoryItemAddedEvent>, HistoryItemAddedEventHandler>();
 
             return services;
         }

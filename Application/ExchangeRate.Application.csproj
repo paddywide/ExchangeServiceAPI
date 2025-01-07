@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="QueryRateCompleted\**" />
     <Compile Remove="Query\**" />
+    <EmbeddedResource Remove="QueryRateCompleted\**" />
     <EmbeddedResource Remove="Query\**" />
+    <None Remove="QueryRateCompleted\**" />
     <None Remove="Query\**" />
   </ItemGroup>
 
@@ -26,10 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\ExchangeRate.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="QueryRateCompleted\" />
   </ItemGroup>
 
 </Project>

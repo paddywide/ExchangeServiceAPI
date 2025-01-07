@@ -9,7 +9,9 @@ using ExchangeRate.Domain.Primitive.Result;
 using FluentValidation.Results;
 using ExchangeRate.Domain.Errors;
 using ExchangeRate.Domain.GetConvertedMondy;
-using ExchangeRate.Domain.RequestedPublicRate;
+using ExchangeRate.Domain.Aggregate.RequestedPublicRate;
+using ExchangeRate.Application.Interfaces;
+using ExchangeRate.Application.Services;
 
 namespace Application.Features.Money.Commands.GetConvertedMoney
 {
@@ -19,14 +21,16 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
         private readonly IExternalVendorRepository _externalVendorRepository; 
         private readonly IQueryHistoryRepository _queryHistoryRepository;
         private readonly ICurrencyCodeRepository _currencyCodeRepository;
+        private readonly IHistoryService _historyService;
         private readonly IMapper _mapper;
 
         public GetExchangeRateCommandHandler(IExternalVendorRepository externalVendorRepository, IQueryHistoryRepository queryHistoryRepository
-                                            , ICurrencyCodeRepository currencyCodeRepository, IMapper mapper)
+                                           , IMapper mapper , ICurrencyCodeRepository currencyCodeRepository, IHistoryService historyService)
         {
             _externalVendorRepository = externalVendorRepository;
             _queryHistoryRepository = queryHistoryRepository;
             _currencyCodeRepository = currencyCodeRepository;
+            _historyService = historyService;
             _mapper = mapper;
         }
 
@@ -48,6 +52,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
             //RequestedPublicRate requestedPublicRate = new RequestedPublicRate(_queryHistoryRepository);
             //requestedPublicRate.SaveToQueryHistory(queryHistoryToCreate);
+            await _historyService.CreateHistory();
             InsertIntoQueryHistory(calculateRate);
             var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);
 

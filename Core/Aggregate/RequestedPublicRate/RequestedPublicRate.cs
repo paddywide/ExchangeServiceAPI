@@ -11,7 +11,7 @@ using ExchangeRate.Domain.GetConvertedMondy;
 using ExchangeRate.Domain.Models;
 using ExchangeRate.Donmain.Contract;
 
-namespace ExchangeRate.Domain.RequestedPublicRate
+namespace ExchangeRate.Domain.Aggregate.RequestedPublicRate
 {
 
     public sealed class RequestedPublicRate : AggregateRoot

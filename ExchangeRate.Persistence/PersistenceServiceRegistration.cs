@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using ExchangeRate.Donmain.Contract;
+using ExchangeRate.Application.Interfaces;
 
 namespace ExchangeRate.Persistence
 {

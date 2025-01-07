@@ -3,8 +3,9 @@ using MediatR.NotificationPublishers;
 using FluentValidation;
 using Application.Features.Money.Commands.GetConvertedMoney;
 using System.Reflection;
-using Application.Contracts.CurrencyConvert;
 using ExchangeRate.Application.MappingProfiles;
+using ExchangeRate.Application.Interfaces;
+using ExchangeRate.Application.Services;
 
 namespace ExchangeRate.Application
 {
@@ -17,7 +18,7 @@ namespace ExchangeRate.Application
                 cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddTransient<ICurrencyConvert, CurrencyConvert>();
+            services.AddScoped<IHistoryService, HistoryService>();
 
             return services;
         }
