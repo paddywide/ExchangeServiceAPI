@@ -20,7 +20,7 @@ namespace ExchangeRate.Infrastructure.EventDispatching
 
         public async Task Dispatch(IDomainEvent domainEvent)
         {
-            var eventHandlers = _serviceProvider.GetServices<IEventHandler<IDomainEvent>>();
+            var eventHandlers = _serviceProvider.GetServices<IEventHandler<HistoryItemAddedEvent>>();
 
             foreach (var handler in eventHandlers)
             {
