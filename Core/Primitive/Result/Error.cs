@@ -22,6 +22,9 @@ public class Error
     public static Error Failure(string code, string description) =>
         new(code, description, ErrorType.Failure);
 
+    public static Error UnableGetPublicApiResponse(string code, string description) =>
+        new(code, description, ErrorType.UnableGetPublicApiResponse);
+
     public static Error NotFound(string code, string description) =>
         new(code, description, ErrorType.NotFound);
 

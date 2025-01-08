@@ -42,13 +42,12 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             }
 
             var response = await _externalVendorRepository.GetExchangeRate(request.InputCurrency);
-            if (!response.IsSuccessStatusCode)
+            if (!response.IsSuccess)
             {
                 return ConfigurationErrors.UnableGetPublicApiResponse;
             }
-
+            
             var calculateRate = await CalculateRate(response, request);
-            //var queryHistoryToCreate = _mapper.Map<QueryHistory>(calculateRate);
             await _historyService.CreateHistory();
             InsertIntoQueryHistory(calculateRate);
             var ret = _mapper.Map<CurrencyConvertResponse>(calculateRate);
@@ -63,7 +62,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             await _queryHistoryRepository.AddHistory(queryHistoryToCreate);
         }
 
-        private async Task<CalculatedAmount> CalculateRate(HttpResponseMessage response, GetExchangeRateCommand request)
+        private async Task<CalculatedAmount> CalculateRate(ResultT<ExchangeRateData> response, GetExchangeRateCommand request)
         {
             var rate = await GetExchangeOneRateAsync(response, request.OutputCurrancy);
             double convertedAmount = CaculateConvertedAmount(rate, request.Amount);
@@ -92,13 +91,12 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             return rate * amount;
         }
 
-        private async Task<double> GetExchangeOneRateAsync(HttpResponseMessage response, string OutputCurrancy)
+        private async Task<double> GetExchangeOneRateAsync(ResultT<ExchangeRateData> response, string OutputCurrancy)
         {
-            var resp = await response.Content.ReadFromJsonAsync<ExchangeRateData>();
-            if (resp is null)
+            if (response.Value is null)
                 throw new NullReferenceException("GetExchangeRate Response is null");
 
-            return resp.Conversion_rates.USD;
+            return response.Value.Conversion_rates.USD;
         }
     }
 

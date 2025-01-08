@@ -9,4 +9,5 @@ public enum ErrorType
     AccessUnAuthorized = 4,
     AccessForbidden = 5,
     RequestValidationError = 6,
+    UnableGetPublicApiResponse = 7
 }
