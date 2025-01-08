@@ -1,6 +1,7 @@
 ﻿using ExchangeRate.Application;
 using ExchangeRate.Persistence;
 using ExchangeRate.Infrastructure;
+using ExchangeRate.Identity;
 
 namespace Api
 {
@@ -11,6 +12,7 @@ namespace Api
             services.AddApplicationDI()
                 .AddInfrastructureDI(configuration)
                 .AddCoreDI()
+                .AddIdentityServices(configuration)
                 .AddPersistenceServices(configuration);
 
             //services.AddValidatorsFromAssemblyContaining<CurrencyConvertRequestValidator>();

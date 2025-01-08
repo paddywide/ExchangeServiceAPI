@@ -1,13 +1,23 @@
 ﻿using ExchangeRate.Domain.Primitive.Result;
 using FluentValidation.Results;
+using MediatR;
 using System.Collections.Generic;
 
 namespace ExchangeRate.Domain.Errors;
 
 public static class ConfigurationErrors
 {
-    public static Error NotFound(string id) =>
-        Error.NotFound("Configurations.NotFound", $"Configuration with Id: {id} not found");
+    public static Error NotFound(string email) =>
+        Error.NotFound("Configurations.NotFound", $"User with {email} not found.");
+
+    public static Error CredentialInvalid(string email) =>
+        Error.NotFound("Configurations.CredentialInvalid", $"Credentials for {email} aren't valid.");
+
+    public static Error RegisterNotSuccessful(string errorList) =>
+        Error.NotFound("Configurations.RegisterNotSuccessful", $"Errors: {errorList}");
+    
+    public static Error UserNotFound(string id) =>
+        Error.NotFound("Configurations.UserNotFound", $"Configuration with Id: {id} not found");
 
     public static Error Conflict(string name) =>
         Error.Conflict("Configurations.Conflict", $"Configuration with Name: {name} already exists");
