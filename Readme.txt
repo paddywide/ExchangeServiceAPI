@@ -6,6 +6,9 @@ clean Architecture, Result Pattern, Domain event, Aggregate, Primitive and Value
 .Net Core:
 Code first, HttpClient
 
+Security:
+JWT
+
 Nuget:
 Exception middleware, MediatR, fluentValidation, Mapper
 
@@ -13,7 +16,7 @@ DB:
 SQLite
 
 
-There is one post method in swagger, if you post the below body 
+In /api/ExchangeService path, if you post the below body 
 {
   "amount": 5,
   "inputCurrency": "AUD",
@@ -21,3 +24,10 @@ There is one post method in swagger, if you post the below body
 }
 
 it will call http to get the real time exchange rage from public API, base on the rate it will return the converted USD amount. Also it will insert into the DB for logging this request.
+
+
+In /api/login path, you can pass this request to body to get token
+{
+  "email": "vistor@localhost.com",
+  "password": "vistor"
+}
