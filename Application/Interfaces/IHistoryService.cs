@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ExchangeRate.Domain.GetConvertedMondy;
+using ExchangeRate.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,6 @@ namespace ExchangeRate.Application.Interfaces
 {
     public interface IHistoryService
     {
-        Task CreateHistory();
+        Task CreateHistory(QueryHistory queryHistory);
     }
 }
