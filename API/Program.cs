@@ -10,10 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDI(builder.Configuration);
-
+builder.Services.AddCorsPolicy();
 
 var app = builder.Build();
 //app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
