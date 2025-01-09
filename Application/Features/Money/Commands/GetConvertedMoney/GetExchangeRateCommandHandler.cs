@@ -65,7 +65,7 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
 
         private async Task<ValidationResult> ValidateRequest(GetExchangeRateCommand request)
         {
-            var validator = new GetExchangeRateCommandValidator(_currencyCodeRepository, _queryHistoryRepository);
+            var validator = new GetExchangeRateCommandValidator(_currencyCodeRepository);
             var result = await validator.ValidateAsync(request);
             return result;
         }

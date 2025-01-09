@@ -7,14 +7,10 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
     public class GetExchangeRateCommandValidator : AbstractValidator<GetExchangeRateCommand>
     {
         private readonly ICurrencyCodeRepository _currencyCodeRepository;
-        private readonly IQueryHistoryRepository _queryHistoryRepository;
 
-        public GetExchangeRateCommandValidator(ICurrencyCodeRepository currencyCodeRepository, IQueryHistoryRepository queryHistoryRepository)
+        public GetExchangeRateCommandValidator(ICurrencyCodeRepository currencyCodeRepository)
         {
-
-
             this._currencyCodeRepository = currencyCodeRepository;
-            this._queryHistoryRepository = queryHistoryRepository;
 
             RuleFor(x => x.Amount)
                 .NotEmpty().WithMessage("Amount is required")
@@ -35,7 +31,6 @@ namespace Application.Features.Money.Commands.GetConvertedMoney
             RuleFor(q => q)
                 .MustAsync(IsOutputCurrencyCodeExisted)
                 .WithMessage("Output Currency Code doesn't exists");
-
         }
 
         private Task<bool> IsInputCurrencyCodeExisted(GetExchangeRateCommand command, CancellationToken token)
