@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Money.Commands.GetConvertedMoney;
 using ExchangeRate.Domain.Primitive.Result;
+using Core.Models.Response;
 
 namespace Api.Controllers
 {
@@ -31,6 +32,11 @@ namespace Api.Controllers
                         onSuccess: Ok,
                         onFailure: Problem
                     );
+        }
+        [HttpGet("")]
+        public async Task<IActionResult> GetExchangeRateJson()
+        {
+            return Ok(new CurrencyConvertResponse());
         }
     }
 }
