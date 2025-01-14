@@ -1,5 +1,6 @@
 ﻿using ExchangeRate.Application.Models.Identity;
 using ExchangeRate.Domain.Primitive.Result;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ExchangeRate.Application.Contracts.Identity
     {
         Task<ResultT<AuthResponse>> Login(AuthRequest request);
         Task<ResultT<RegistrationResponse>> Register(RegistrationRequest request);
-        Task<bool> Logout(string token);
+        Task<ResultT<object>> Logout(HttpRequest request);
         Task<bool> IsTokenBlacklisted(string token);
     }
 }

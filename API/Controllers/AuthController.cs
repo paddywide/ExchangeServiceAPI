@@ -33,14 +33,14 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+        public async Task<IActionResult> Register(RegistrationRequest request)
         {
-            return Ok(await _authenticationService.Register(request));
-            //var result = await _authenticationService.Register(request);
-            //return result.Match(
-            //    onSuccess: Ok,
-            //    onFailure: Problem
-            //);
+            //return Ok(await _authenticationService.Register(request));
+            var result = await _authenticationService.Register(request);
+            return result.Match(
+                        onSuccess: Ok,
+                        onFailure: Problem
+                    );
 
         }
 
@@ -48,23 +48,11 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            if (string.IsNullOrEmpty(token))
-            {
-                return BadRequest(new { Message = "Token is required for logout." });
-            }
-
-            var result = await _authenticationService.Logout(token);
-
-            if (!result)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Logout failed. Please try again." });
-            }
-
-            return Ok(new { Message = "Successfully logged out." });
+            var result = await _authenticationService.Logout(Request);
+            return result.Match(
+                        onSuccess: Ok,
+                        onFailure: Problem
+                    );
         }
-
-
     }
 }

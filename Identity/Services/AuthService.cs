@@ -1,10 +1,13 @@
 ﻿using Application.Exception;
+using Azure.Core;
 using ExchangeRate.Application.Contracts.Identity;
 using ExchangeRate.Application.Models.Identity;
 using ExchangeRate.Domain.Errors;
 using ExchangeRate.Domain.Primitive.Result;
 using Identity.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -37,17 +40,16 @@ namespace Identity.Services
 
             if (user == null)
             {
-                //return ConfigurationErrors.UserNotFound(request.Email);
-
-                throw new Exception($"User with {request.Email} not found.");
+                //throw new Exception($"User with {request.Email} not found.");
+                return ConfigurationErrors.NotFound(request.Email);
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (result.Succeeded == false)
             {
-                //return ConfigurationErrors.CredentialInvalid(request.Email);
-                throw new Exception($"Credentials for '{request.Email} aren't valid.");
+                //throw new Exception($"Credentials for '{request.Email} aren't valid.");
+                return ConfigurationErrors.CredentialInvalid(request.Email);
             }
 
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
@@ -90,22 +92,28 @@ namespace Identity.Services
                     str.AppendFormat("•{0}\n", err.Description);
                 }
 
-                //return ConfigurationErrors.RegisterNotSuccessful(str.ToString());
-                throw new BadRequestException($"{str}");
+                //throw new BadRequestException($"{str}");
+                return ConfigurationErrors.RegisterNotSuccessful(str.ToString());
             }
         }
-        public async Task<bool> Logout(string token)
+        public async Task<ResultT<object>> Logout(HttpRequest request)
         {
+            var email = request.Body.ToString();
+            var token = request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (string.IsNullOrEmpty(token))
+            {
+                return ConfigurationErrors.EmptyToken(email);
+            }
+
             try
             {
                 await AddTokenToBlacklist(token);
-
-                return true;
+                return (new { Message = "Successfully logged out." });
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return ConfigurationErrors.LogoutFail(email, ex.Message);
             }
         }
 

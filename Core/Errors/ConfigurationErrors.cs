@@ -8,7 +8,7 @@ namespace ExchangeRate.Domain.Errors;
 public static class ConfigurationErrors
 {
     public static Error NotFound(string email) =>
-        Error.NotFound("Configurations.NotFound", $"User with {email} not found.");
+        Error.NotFound("Configurations.NotFound", $"User {email} not found.");
 
     public static Error CredentialInvalid(string email) =>
         Error.NotFound("Configurations.CredentialInvalid", $"Credentials for {email} aren't valid.");
@@ -30,6 +30,13 @@ public static class ConfigurationErrors
 
     public static Error DeleteFailure =>
         Error.Failure("Configurations.DeleteFailure", $"Something went wrong in deleting configuration");
+
+    public static Error LogoutFail(string email, string ex) =>
+        Error.Failure("Configurations.LogoutFail", $"Logout failed for {email}. Exception message: {ex}");
+
+    public static Error EmptyToken(string email) =>
+        Error.Failure("Configurations.EmptyToken", $"Logout failed for {email}");
+
 
     public static Error RequestValidationError(List<ValidationFailure> error) =>
         Error.Validation("Configurations.RequestValidationError", string.Join(", ", error));
