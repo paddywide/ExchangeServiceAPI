@@ -31,7 +31,7 @@ namespace Identity.Services
             _signInManager = signInManager;
         }
 
-        public async Task<AuthResponse> Login(AuthRequest request)
+        public async Task<ResultT<AuthResponse>> Login(AuthRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -64,7 +64,7 @@ namespace Identity.Services
         }
 
 
-        public async Task<RegistrationResponse> Register(RegistrationRequest request)
+        public async Task<ResultT<RegistrationResponse>> Register(RegistrationRequest request)
         {
             var user = new ApplicationUser
             {

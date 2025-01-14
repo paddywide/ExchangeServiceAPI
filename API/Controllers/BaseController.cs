@@ -15,6 +15,7 @@ public class BaseController : ControllerBase
     {
         var statusCode = error.ErrorType switch
         {
+            ErrorType.UnableGetPublicApiResponse => StatusCodes.Status502BadGateway,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.Conflict => StatusCodes.Status409Conflict,

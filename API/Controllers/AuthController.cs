@@ -5,12 +5,13 @@ using ExchangeRate.Domain.Primitive.Result;
 using Microsoft.AspNetCore.Mvc;
 using ExchangeRate.Domain.Primitive.Result;
 using Microsoft.AspNetCore.Authorization;
+using Api.Controllers;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authenticationService;
 
@@ -20,9 +21,15 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login(AuthRequest request)
+        public async Task<IActionResult> Login(AuthRequest request)
         {
-            return Ok(await _authenticationService.Login(request));
+            //return Ok(await _authenticationService.Login(request));
+            var result = await _authenticationService.Login(request);
+
+            return result.Match(
+                        onSuccess: Ok,
+                        onFailure: Problem
+                    );
         }
 
         [HttpPost("register")]

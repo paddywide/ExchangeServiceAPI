@@ -11,17 +11,14 @@ public class TokenValidationMiddleware
 
     public async Task InvokeAsync(HttpContext context, IServiceProvider serviceProvider)
     {
-        // Define paths to exclude from token validation
         var excludedPaths = new[] { "/api/auth/login", "/api/auth/register" };
 
         if (excludedPaths.Any(path => context.Request.Path.StartsWithSegments(path, StringComparison.OrdinalIgnoreCase)))
         {
-            // Skip middleware logic for excluded paths
             await _next(context);
             return;
         }
 
-        // Token validation logic
         var authService = serviceProvider.GetRequiredService<IAuthService>();
         var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
