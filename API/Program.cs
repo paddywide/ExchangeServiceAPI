@@ -14,6 +14,8 @@ builder.Services.AddCorsPolicy();
 
 var app = builder.Build();
 //app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<TokenValidationMiddleware>();
+
 app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
@@ -23,7 +25,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -19,6 +19,8 @@ namespace Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
+        // In-memory blacklist for demonstration
+        private readonly HashSet<string> _blacklistedTokens = new();
 
         public AuthService(UserManager<ApplicationUser> userManager,
             IOptions<JwtSettings> jwtSettings,
@@ -91,6 +93,30 @@ namespace Identity.Services
                 //return ConfigurationErrors.RegisterNotSuccessful(str.ToString());
                 throw new BadRequestException($"{str}");
             }
+        }
+        public async Task<bool> Logout(string token)
+        {
+            try
+            {
+                await AddTokenToBlacklist(token);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        private async Task AddTokenToBlacklist(string token)
+        {
+            _blacklistedTokens.Add(token);
+            await Task.CompletedTask;
+        }
+        public Task<bool> IsTokenBlacklisted(string token)
+        {
+            return Task.FromResult(_blacklistedTokens.Contains(token));
         }
 
         private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)

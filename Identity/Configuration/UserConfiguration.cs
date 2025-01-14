@@ -31,13 +31,13 @@ namespace Identity.Configuration
                  new ApplicationUser
                  {
                      Id = "9e224968-33e4-4652-b7b7-8574d048cdb9",
-                     Email = "vistor@localhost.com",
-                     NormalizedEmail = "VISTOR@LOCALHOST.COM",
+                     Email = "visitor@localhost.com",
+                     NormalizedEmail = "VISITOR@LOCALHOST.COM",
                      FirstName = "System",
                      LastName = "User",
-                     UserName = "vistor@localhost.com",
-                     NormalizedUserName = "VISTOR@LOCALHOST.COM",
-                     PasswordHash = hasher.HashPassword(null, "vistor"),
+                     UserName = "visitor@localhost.com",
+                     NormalizedUserName = "VISITOR@LOCALHOST.COM",
+                     PasswordHash = hasher.HashPassword(null, "visitor"),
                      EmailConfirmed = true
                  }
             );

@@ -4,6 +4,7 @@ using ExchangeRate.Application.Models.Identity;
 using ExchangeRate.Domain.Primitive.Result;
 using Microsoft.AspNetCore.Mvc;
 using ExchangeRate.Domain.Primitive.Result;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -35,5 +36,28 @@ namespace API.Controllers
             //);
 
         }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { Message = "Token is required for logout." });
+            }
+
+            var result = await _authenticationService.Logout(token);
+
+            if (!result)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Logout failed. Please try again." });
+            }
+
+            return Ok(new { Message = "Successfully logged out." });
+        }
+
+
     }
 }
