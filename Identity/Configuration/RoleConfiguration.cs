@@ -17,8 +17,8 @@ namespace Identity.Configuration
                 new IdentityRole
                 {
                     Id = "cac43a6e-f7bb-4448-baaf-1add431ccbbf",
-                    Name = "Vistor",
-                    NormalizedName = "VISTOR"
+                    Name = "Visitor",
+                    NormalizedName = "VISITOR"
                 },
                 new IdentityRole
                 {

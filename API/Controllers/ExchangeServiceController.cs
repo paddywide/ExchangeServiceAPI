@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Features.Money.Commands.GetConvertedMoney;
 using ExchangeRate.Domain.Primitive.Result;
 using Core.Models.Response;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
@@ -25,6 +26,7 @@ namespace Api.Controllers
         //}
 
         [HttpPost("")]
+        [Authorize(Roles = "Visitor")]
         public async Task<IActionResult> GetExchangeRate(GetExchangeRateCommand convertRequest)
         {
             var result = await _mediator.Send(convertRequest);
