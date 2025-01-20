@@ -28,13 +28,16 @@
   
   <ItemGroup>
     
-    <!-- Include appspec.yml -->
     <None Include="appspec.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
 
-    <!-- Include all files in the scripts folder -->
+    <None Include="buildspec.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None> 
+
     <None Include="scripts\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
