@@ -16,8 +16,11 @@ phases:
 
   build:
     commands:
+      - echo "=== Listing all package ==="
+      - dotnet list Api/ExchangeRate.API.csproj package
       - echo Building the application...
       - dotnet clean 
+      - dotnet build --configuration Release
       - dotnet publish -c Release -o output
 
   post_build:
