@@ -4,6 +4,7 @@ sudo systemctl stop exchange-rate.service || true
 echo "Existing application stopped."
 
 
-chmod +w /wwwroot/exchange-rate/SQLite.dll 2>/dev/null || true
-rm -f /wwwroot/exchange-rate/SQLite.dll 2>/dev/null || true
+sudo rm -rf /wwwroot/exchange-rate/*
+
+exit 0
 
