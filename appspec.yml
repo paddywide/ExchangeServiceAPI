@@ -3,6 +3,7 @@ os: linux
 files:
   - source: output
     destination: /wwwroot/exchange-rate/
+    overwrite: true
 hooks:
   BeforeInstall:
     - location: stop_service.sh
