@@ -25,5 +25,21 @@
     <ProjectReference Include="..\Identity\ExchangeRate.Identity.csproj" />
     <ProjectReference Include="..\Infrastructure\ExchangeRate.Infrastructure.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    
+    <!-- Include appspec.yml -->
+    <None Include="appspec.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None>
+
+    <!-- Include all files in the scripts folder -->
+    <None Include="scripts\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>
