@@ -3,11 +3,11 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      dotnet: 7.0 # Adjust based on your .NET Core version
+      dotnet: 8.0 # Adjust based on your .NET Core version
     commands:
       - echo Installing dependencies...
-      - apt-get update -y
-      - apt-get install -y unzip
+      - yum update -y
+      - yum install -y unzip
 
   pre_build:
     commands:
@@ -21,10 +21,11 @@ phases:
 
   post_build:
     commands:
-      - echo Preparing for deployment...
-      - zip -r deployment.zip output/
+      #- echo Preparing for deployment...
+      #- zip -r deployment.zip output/
       - echo Build phase completed.
 
 artifacts:
   files:
-    - deployment.zip
+    - output/**/*
+    - appspec.yml
