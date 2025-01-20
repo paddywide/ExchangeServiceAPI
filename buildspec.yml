@@ -12,7 +12,7 @@ phases:
   pre_build:
     commands:
       - echo Restoring .NET Core dependencies...
-      - dotnet restore
+      - dotnet restore ExchangeServiceAPI.sln
 
   build:
     commands:
