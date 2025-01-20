@@ -17,7 +17,7 @@ phases:
   build:
     commands:
       - echo "=== Listing all package ==="
-      - dotnet list Api/ExchangeRate.API.csproj package
+      #- dotnet list Api/ExchangeRate.API.csproj package
       - echo Building the application...
       - dotnet clean 
       - dotnet build --configuration Release
