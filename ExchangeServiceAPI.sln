@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{02B66EC8-B058-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLite", "DB\SQLite\SQLite.csproj", "{5709D000-92B4-4AE8-860F-2827670EDC95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeRate.Identity", "Identity\ExchangeRate.Identity.csproj", "{99DB2C19-55D2-474D-AB62-D84204BD63DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeRate.Identity", "Identity\ExchangeRate.Identity.csproj", "{99DB2C19-55D2-474D-AB62-D84204BD63DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
