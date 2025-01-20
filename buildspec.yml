@@ -21,11 +21,14 @@ phases:
 
   post_build:
     commands:
-      #- echo Preparing for deployment...
-      #- zip -r deployment.zip output/
+      - echo "=== Listing all files in workspace ==="
+      - ls -R
       - echo Build phase completed.
 
 artifacts:
   files:
     - output/**/*
     - appspec.yml
+    - scripts/**/*
+    - stop_service.sh
+    - start_service.sh
