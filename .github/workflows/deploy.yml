@@ -1,40 +1,72 @@
-name: Deploy React & .NET Core to EC2
+name: Build and Push .NET Core App to Amazon ECR
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # Step 1: Checkout the repository
+      - run: echo "Checkout source code"
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-      - name: Set up SSH and Deploy
+      - name: Verify AWS CLI Installation
+        run: aws --version
+
+      - name: Test AWS CLI Configuration
+        run: aws sts get-caller-identity --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 2: Configure AWS Credentials
+      - name: Prepare AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Step 3: Build the Docker image for .NET Core
+      - run: echo "Build Docker image"
+      - name: Build Docker image
         run: |
-          ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-          
-          # Log in to AWS ECR
-          aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com
+          docker build -t exchangerate-api .
+          docker tag exchangerate-api:latest 741448956915.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/er/exchangerate-api:api
 
-          # Pull latest images
-          docker pull <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/er/exchangerate-react:react
-          docker pull <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-app:latest
+      # Step 4: Push the Docker image to Amazon ECR
+      - run: echo "Push Docker image to Amazon ECR"
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push 741448956915.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/er/exchangerate-api:api
+      - run: echo "Complete"
 
-          # Stop and remove old containers if running
-          docker stop react-app || true && docker rm react-app || true
-          docker stop dotnet-app || true && docker rm dotnet-app || true
+      # Step 5: Deploy to EC2
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}  # EC2 public IP or DNS
+          username: ec2-user  # EC2 username
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Private key for SSH
+          script: |
+            # Log in to AWS ECR
+            aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 741448956915.dkr.ecr.ap-southeast-2.amazonaws.com
 
-          # Run React container
-          docker run -d --name react-app -p 80:80 <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/er/exchangerate-react:react
+            # Pull the latest .NET Core image
+            docker pull 741448956915.dkr.ecr.ap-southeast-2.amazonaws.com/er/exchangerate-api:api
 
-          # Run .NET Core container on port 5000
-          docker run -d --name dotnet-app -p 5000:5000 <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-app:latest
+            # Stop and remove the existing .NET Core container
+            docker stop exchangerate-api || true
+            docker rm exchangerate-api || true
 
-          # Clean up old images
-          docker image prune -f
+            # Run the new .NET Core container
+            docker run -d --name exchangerate-api -p 5000:5000 741448956915.dkr.ecr.ap-southeast-2.amazonaws.com/er/exchangerate-api:api
 
-          EOF
+            # Clean up old Docker images
+            docker image prune -f

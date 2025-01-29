@@ -28,6 +28,8 @@
   
   <ItemGroup>
     
+    <None Include="..\.github\workflows\deploy.yml" Link="deploy.yml" />
+    
     <None Include="appspec.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
