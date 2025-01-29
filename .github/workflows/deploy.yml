@@ -1,0 +1,40 @@
+name: Deploy React & .NET Core to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH and Deploy
+        run: |
+          ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          
+          # Log in to AWS ECR
+          aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com
+
+          # Pull latest images
+          docker pull <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/er/exchangerate-react:react
+          docker pull <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-app:latest
+
+          # Stop and remove old containers if running
+          docker stop react-app || true && docker rm react-app || true
+          docker stop dotnet-app || true && docker rm dotnet-app || true
+
+          # Run React container
+          docker run -d --name react-app -p 80:80 <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/er/exchangerate-react:react
+
+          # Run .NET Core container on port 5000
+          docker run -d --name dotnet-app -p 5000:5000 <your-aws-account-id>.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-app:latest
+
+          # Clean up old images
+          docker image prune -f
+
+          EOF
