@@ -12,6 +12,17 @@ builder.Services.AddCustomSwaggerGen();
 builder.Services.AddAppDI(builder.Configuration);
 builder.Services.AddCorsPolicy();
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+if (OperatingSystem.IsWindows()) // Enable EventLog only on Windows
+{
+    builder.Logging.AddEventLog();
+}
+
+builder.WebHost.UseUrls("http://*:5000");
+
 var app = builder.Build();
 //app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<TokenValidationMiddleware>();

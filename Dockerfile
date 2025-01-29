@@ -35,6 +35,9 @@ WORKDIR /app
 # Copy the published output from the build stage
 COPY --from=build /publish /app
 
+# Ensure ASP.NET listens on port 5000 instead of 8080
+ENV ASPNETCORE_URLS=http://+:5000
+
 # Expose the application's port
 EXPOSE 5000
 EXPOSE 5001

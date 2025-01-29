@@ -30,6 +30,8 @@
     
     <None Include="..\.github\workflows\deploy.yml" Link="deploy.yml" />
     
+    <None Include="..\Dockerfile" Link="Dockerfile" />
+    
     <None Include="appspec.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
