@@ -16,6 +16,7 @@ using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
@@ -42,13 +43,14 @@ namespace ExchangeServiceAPI.Application.IntegrationTests
         private Mock<IMapper> _mapper;
         private Mock<IHistoryService> _historyService;
         private CurrencyConvertResponse _expect;
-
+        private Mock<IConfiguration> _configuration;
 
         [SetUp]
         public void Setup()
-        {        
+        {
             _mediator = new Mock<IMediator>();
-            _controller = new ExchangeServiceController(_mediator.Object);
+            _configuration = new Mock<IConfiguration>();
+            _controller = new ExchangeServiceController(_mediator.Object, _configuration.Object);
             _externalVendorRepository = new Mock<IExternalVendorRepository>();
             _queryHistoryRepository = new Mock<IQueryHistoryRepository>();
             _currencyCodeRepository = new Mock<ICurrencyCodeRepository>();

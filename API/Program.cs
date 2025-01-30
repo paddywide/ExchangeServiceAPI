@@ -21,6 +21,8 @@ if (OperatingSystem.IsWindows()) // Enable EventLog only on Windows
     builder.Logging.AddEventLog();
 }
 
+//when deploy to container, it will listen 8080 by default, below line to force it
+//if local pc install self-cert, then can add 5001
 builder.WebHost.UseUrls("http://*:5000");
 
 var app = builder.Build();
